@@ -2885,8 +2885,16 @@ https://my.velocihost.net/knowledgebase/29/Fix-the-apt-get-install-error-Media-c
 #-----------------------------------------------------------------------------
   if [ $os_is_supported != true ]; then
     error_msg "Your system ( $os_version_pretty ) is not (yet) supported!"
-    exit 1
-  fi
+if ($opt_prompts); then
+                if confirm "Continue anyway? [y/N]" ; then
+                    echo "OK"
+                else
+                    exit 1
+                fi
+            else
+                echo "Giving up"
+                exit 1
+            fi
 }
 
 detect_darwin
@@ -2948,7 +2956,16 @@ detect_bitness
 
 if [ $os_is_supported != true ]; then
     error_msg "Your system ($os_version_pretty_name) is not (yet) supported!"
-    exit 1
+if ($opt_prompts); then
+                if confirm "Continue anyway? [y/N]" ; then
+                    echo "OK"
+                else
+                    exit 1
+                fi
+            else
+                echo "Giving up"
+                exit 1
+            fi
 fi
 
 # Detect presence of sudo and complain if it's missing
@@ -3606,6 +3623,7 @@ else
             ( "$(uname -r)" =~ "linuxkit" ) ||
             ( "$(uname -r)" =~ "rockchip64" ) ||
             ( "$(uname -r)" =~ "danctnix" ) ||
+            ( "$(uname -r)" =~ "android" ) ||
             ( "$(uname -a)" =~ "Linux g6sbc01" ) ||
             ( "$(uname -a)" =~ "Linux penguin" ) ]]; then
 
